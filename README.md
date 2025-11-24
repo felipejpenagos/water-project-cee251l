@@ -11,20 +11,6 @@ Models the complete water supply chain: watershed → groundwater → reservoir 
 # Install dependencies
 pip install -e /path/to/multivarious
 
-# Run 2-year test
-python3 -c "
-from water_constants import water_constants
-from water_analysis import water_analysis
-import numpy as np
-
-constants = water_constants()
-constants[-2] = 2  # 2 years
-constants[-1] = 0  # no plots
-
-design = np.array([10000, 500, 500, 200])
-cost, _ = water_analysis(design, constants)
-print(f'Cost: \${cost:.0f}M')
-"
 ```
 
 ## Core Files
