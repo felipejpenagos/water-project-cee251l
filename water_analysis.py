@@ -142,7 +142,7 @@ def water_analysis(v, constants):
         Qe = Q[3, :]                    # evaporation from reservoir, Mgal / day
         Qr = Q[4, :]                    # river flow,                 Mgal / day
 
-        Cs = Cs_base + cp*population + cs*Qs    # streamflow contaminant concentrations
+        Cs = Cs_base[:, None] + cp[:, None] * population + cs[:, None] * Qs  #Cs = Cs_base + cp*population + cs*Qs    # streamflow contaminant concentrations
         Cs[Cs < 1e-3] = 1e-2
 
         # compute the one-year precipitation index 
@@ -175,14 +175,14 @@ def water_analysis(v, constants):
         plt.plot(year, ipr)
         plt.plot(year, 1.0 / Tr)
         plt.ylabel('statistical averages')
-        plt.legend(['avg. inch per rainfall', '1/rain return period'], loc='northwest')
+        plt.legend(['avg. inch per rainfall', '1/rain return period'], loc='upper left')
         plt.axis([2025, 2025 + Years, 0, 1.0])
         plt.title(f'CCTS = {CCTS:.0f}y, Tc={Tc:4.1f} deg.F, P_2={P2:4.1f}, C_c={Cc*100:4.2f}%, cost={cost:.0f} M$')
         plt.subplot(312)
         plt.plot(year, np.cumsum(precipitation / rainfall_area))
         plt.plot(year, np.cumsum(Qt / watershed_area))
         plt.ylabel('cumulative Tgal')
-        plt.legend(['cumulative precipitation', 'cumulative transpiration'], loc='northwest')
+        plt.legend(['cumulative precipitation', 'cumulative transpiration'], loc='upper left')
         plt.subplot(313)
         plt.plot(year, np.zeros(days), '-k')
         plt.plot(year, SPI)
@@ -197,7 +197,7 @@ def water_analysis(v, constants):
         plt.subplot(311)
         plt.plot(year, Qg)
         plt.plot(year, Qe)
-        plt.legend(['groundwater flow', 'evaporation'], loc='southwest', frameon=False)
+        plt.legend(['groundwater flow', 'evaporation'], loc='lower left', frameon=False)
         plt.ylabel('Mgal / day')
         plt.title(f'V_r = {Vr_max:5.0f} Mg, V_u={Vu_max:5.0f} Mg, V_t={Vt_max:5.0f} Mg, Q_p={Qp_max:4.0f} Mg/d, cost={cost:.0f} M$')
         plt.subplot(312)
@@ -206,12 +206,12 @@ def water_analysis(v, constants):
         plt.plot(year, x[2, :] / Vu_max, '-', color=colors[2])
         plt.plot(year, x[3, :] / Vt_max, '-', color=colors[3])
         plt.ylabel('volumes / capacities')
-        plt.legend(['ground water', 'reservoir', 'untreated', 'treated'], loc='southwest', frameon=False)
+        plt.legend(['ground water', 'reservoir', 'untreated', 'treated'], loc='lower left', frameon=False)
         plt.axis([year[0], year[days - 1], 0, 1.2])
         plt.subplot(313)
         plt.semilogy(year, Qr)
         plt.semilogy(year, Qs)
-        plt.legend(['river flow', 'stream flow'], loc='southwest', frameon=False)
+        plt.legend(['river flow', 'stream flow'], loc='lower left', frameon=False)
         plt.ylabel('Mgal / day')
         # plt.savefig('Fig2.pdf', bbox_inches='tight')
 
