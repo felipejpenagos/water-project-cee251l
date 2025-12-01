@@ -6,6 +6,7 @@ from water_constants import water_constants
 from water_analysis import water_analysis
 from multivarious.opt import nms  # Nelder-Mead Simplex
 from multivarious.utils import plot_cvg_hst
+import matplotlib.pyplot as plt
 
 
 # assign numerical values to all the constants in this system
@@ -16,9 +17,9 @@ Plots = 0      # 1: draw plots, 0: don't draw plots
 
 analysis_constants[-2] = Years
 
-#              Vr,max  Vu,max  Vt,max  Qp,max
-#              Mg      Mg      Mg      Mg/day
-design_vars_init = np.array([10000, 500, 500, 200])   ## <<< put initial guess here
+#                               Vr,max  Vu,max  Vt,max  Qp,max
+#                               Mg      Mg      Mg      Mg/day
+design_vars_init = np.array([  10000  ,  500  ,  500  , 200  ])   ## <<< put initial guess here      ****** (replace with "???" in student version)
 
 
 # evaluate the initial guess   -----------------------------------------
@@ -30,32 +31,22 @@ if response == 'n':
     exit()
 
 # optimize the design ---------------------------------------------------
-# design_vars_lb  = np.array([    ,     ,      ,     ])  ## <<< put lower bound values here
-# design_vars_ub  = np.array([    ,     ,      ,     ])  ## <<< put upper bound values here
+# design_vars_lb  = np.array([    ,     ,      ,     ])  ## <<< put lower bound values here         ******
+# design_vars_ub  = np.array([    ,     ,      ,     ])  ## <<< put upper bound values here         ******
 
-design_vars_ub = 0.5 * design_vars_init
-design_vars_lb = 1.5 * design_vars_init
+design_vars_lb = 0.5 * design_vars_init  # 50% of initial       check with HPG
+design_vars_ub = 1.5 * design_vars_init  # 150% of initial      check with HPG
 
 # algorithmic constants ...
 
 #           display  tolX  tolF   tolG  MaxEvals  Penalty  Exponent  nMax errJ
-options = {
-    'display': 2,
-    'tolX': 0.10,
-    'tolF': 1.00,
-    'tolG': 1.0,
-    'MaxEvals': 500,
-    'Penalty': 1000,
-    'Exponent': 2.0,
-    'nMax': 9,
-    'errJ': 0.1
-}
+options = [    2,    0.10,  1.00,  1.0,    500,    1000,     2.0,     9,  0.1  ]
 
-analysis_constants[-1] = Plots  # plots on/off
-design_vars_opt, f_opt, g_opt, cvg_hst = nms(
-    water_analysis, design_vars_init, design_vars_lb, design_vars_ub, 
-    options, analysis_constants
-)
+# perform the optimization ------------------------------------------------
+analysis_constants[-1] = Plots  # plots on/ofrf
+design_vars_opt, f_opt, g_opt, cvg_hst = nms(water_analysis, design_vars_init, design_vars_lb, design_vars_ub, options, analysis_constants
+                                             )
+
 # Or use ORS:
 # from multivarious.opt import ors
 # design_vars_opt, f_opt, g_opt, cvg_hst = ors(
@@ -68,6 +59,7 @@ plot_cvg_hst(cvg_hst, design_vars_opt, 20)
 # assess the one example of the optimized design  ---------------------------
 # ... consider assessing the optimized design a few times
 analysis_constants[-1] = 1  # plots on
+plt.show()
 f_opt = water_analysis(design_vars_opt, analysis_constants)
 
 # water_opt ----------------------------------------------------------------

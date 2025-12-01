@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from water_constants import water_constants
 from water_analysis import water_analysis
 from multivarious.rvs import lognormal
-from multivarious.utils import plotCDFci
+from multivarious.rvs.plot_CDF_ci import plot_CDF_ci
 
 
 # on line 9 of water_constants.py . . . Plots = 0;
@@ -22,11 +22,25 @@ from multivarious.utils import plotCDFci
 #   . . . etc . . . if you have other design variables to include . . . 
 
 #              Vr,max Vu,max Vt,max Qp,max
-# opt_v = np.array([??  , ??   , ??   , ??   ])  #  * PUT YOUR BEST PARAMETERS HERE *
+# opt_v = np.array([??  , ??   , ??   , ??   ])  #  * PUT YOUR BEST PARAMETERS HERE * Do this after running water_opt.py! You need those results.
 
 analysis_constants = water_constants()  # assign numerical values to system constants
 analysis_constants[-2] = 50             # 50 year simulation
 analysis_constants[-1] = 1              # show plots
+
+# --- Extract the constants we need for Monte Carlo ---
+analysis_constants = water_constants()  # assign numerical values to system constants
+analysis_constants[-2] = 50             # 50 year simulation
+analysis_constants[-1] = 1              # show plots
+
+# Extract the constants we need for Monte Carlo
+CCTS = analysis_constants[22]  # climate change time scale
+Tc = analysis_constants[27]    # temperature change
+P2 = analysis_constants[29]    # population growth quadratic coefficient
+Cc = analysis_constants[13]    # water conservation percentage
+
+cost, constraints = water_analysis(opt_v, analysis_constants)
+# -----------------------------------------------------------
 
 cost, constraints = water_analysis(opt_v, analysis_constants)
 response = input('   OK to continue? [y]/n : ')
@@ -54,7 +68,6 @@ ssq_cost = 0
 
 plt.figure(10)
 plt.clf()
-plt.hold(True)
 hdl_a, = plt.plot(0, 500, 'ob')
 hdl_b, = plt.plot(0, 500, 'or')
 hdl_c, = plt.plot(0, 500, 'og')
@@ -116,7 +129,15 @@ plt.hist(cost, bins=20)
 plt.xlabel('lifetime cost')
 plt.ylabel('histogram count')
 
-x_avg, x_med, x_sd, x_cov = plotCDFci(cost, 95, 5)
+# Calculate statistics
+x_avg = np.mean(cost)
+x_med = np.median(cost)
+x_sd = np.std(cost)
+x_cov = x_sd / x_avg
+
+# Plot CDF
+plot_CDF_ci(cost, 95, 5)
+
 plt.xlabel('lifetime cost')
 plt.ylabel('non-exceedance probability')
 plt.grid(True)
@@ -155,5 +176,7 @@ plt.plot(rv[3, :], cost, 'o')
 plt.xlabel('C_c, drought water reduction percentage')
 plt.ylabel('lifetime cost, M$')
 plt.title(f'correlation = {crrl[3]:5.2f}')
+
+plt.show()
 
 # water_montecarlo  ------------------------------------------- 21 Mar 2022

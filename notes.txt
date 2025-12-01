@@ -1,0 +1,226 @@
+================================================================================
+CEE 251L - WATER SUPPLY OPTIMIZATION PROJECT
+STUDENT SETUP & WORKFLOW INSTRUCTIONS
+Duke University - Prof. Henri P. Gavin
+Python Translation - December 2025
+================================================================================
+
+OVERVIEW
+--------
+This project simulates a 50-year water supply system and optimizes its design
+using control strategies you develop. You'll write control equations, run 
+optimization, and perform uncertainty analysis.
+
+PROJECT FILES (6 core + Multivarious):
+  - water_constants.py    : System parameters (DO NOT EDIT)
+  - water_system.py       : ODE dynamics (DO NOT EDIT)
+  - water_analysis.py     : 50-year simulation (DO NOT EDIT)
+  - water_opt.py          : Optimization runner (EDIT & RUN)
+  - water_montecarlo.py   : Uncertainty analysis (EDIT & RUN)
+  - my_water_control.py   : YOUR control strategy (EDIT)
+
+DEPENDENCIES:
+  - multivarious package 
+  - numpy, scipy, matplotlib (standard scientific Python)
+
+
+PART 1: INITIAL SETUP
+================================================================================
+
+STEP 1: DOWNLOAD PROJECT FILES
+-------------------------------
+You should have TWO folders on your Desktop or Downloads or desired location:
+  1. multivarious_fork/          (contains the multivarious package)
+  2. water-project-cee251l/      (contains all water project files)
+
+
+STEP 2: INSTALL MULTIVARIOUS PACKAGE
+-------------------------------------
+CRITICAL: Install using the SAME Python you'll use to run the project or will get error messages!
+
+Example: open Terminal and run:
+
+  cd ~/YourPathTo/multivarious/
+  python3 -m pip install -e .
+
+NOTE: The "-m pip" ensures it installs to the correct Python.
+
+Verify installation:
+
+  python3 -c "from multivarious.rvs import lognormal; print('multivarious ready!!!')"
+
+You should see:
+  Initializing multivarious
+  ultivarious ready!!!
+
+
+STEP 3: VERIFY WATER PROJECT IMPORTS
+-------------------------------------
+  cd ~/YourPathTo/water-project-cee251l
+  python3 -c "from water_constants import water_constants; print('Project ready!!!')"
+
+If you see errors about missing 'multivarious', go back to Step 2 and ensure
+you used "python3 -m pip install -e ." (not just "pip install").
+
+
+PART 2: STUDENT WORKFLOW (DO THIS IN ORDER!)
+================================================================================
+WORKFLOW SUMMARY:
+  1. Fill in control strategy (my_water_control.py)
+  2. Fill in optimization bounds (water_opt.py) and RUN
+  3. Fill in optimal design (water_montecarlo.py) and RUN
+
+--------------------------------------------------------------------------------
+TASK 1: DEVELOP YOUR CONTROL STRATEGY
+--------------------------------------------------------------------------------
+FILE: my_water_control.py
+WHAT IT DOES:
+  This function is called every day of the simulation to decide:
+  - Qu: Flow from reservoir to untreated tank (Mgal/day)
+  - Qp: Flow through treatment plant (Mgal/day)
+  - q:  Decontaminant flows [chlorine, filters, activated carbon] (Mgal/day)
+
+WHAT TO EDIT:
+  Find lines with "???" and replace with your control equations.
+
+EXAMPLE (lines 24-29):
+  # Replace these lines:
+  Qu = ???        # flow from reservoir into untreated tank
+  Qp = ???        # flow processed through the treatment plant
+  q = np.array([???, ???, ???])  # flows for each of the three decontaminants
+
+AVAILABLE MEASUREMENTS:
+  - Vr: Reservoir volume (Mgal)
+  - Vu: Untreated tank volume (Mgal)
+  - Vt: Treated tank volume (Mgal)
+  - Cu: Untreated concentrations [micro-organisms, suspended solids, petro-chemical] (ppm)
+  - Ct: Treated concentrations (ppm)
+
+
+SAVE the file after editing.
+
+--------------------------------------------------------------------------------
+TASK 2: RUN OPTIMIZATION TO FIND BEST DESIGN
+--------------------------------------------------------------------------------
+FILE: water_opt.py
+
+WHAT IT DOES:
+  Runs Nelder-Mead (or SQP or ORS) optimization to find the best design parameters
+  (Vr_max, Vu_max, Vt_max, Qp_max) that minimize 50-year cost.
+
+WHAT TO EDIT:
+1. Initial guesses
+   e.g design_vars_init = np.array([???, ???, ???, ???])
+
+2. Optimization bounds (lines ~26-27):
+   Replace:
+     design_vars_lb = 0.5 * design_vars_init  # Lower: 50% of initial
+     design_vars_ub = 1.5 * design_vars_init  # Upper: 150% of initial
+
+   OR specify exact values:
+     design_vars_lb = np.array([5000, 250, 250, 100])
+     design_vars_ub = np.array([15000, 750, 750, 300])
+
+
+HOW TO RUN:
+  cd ~/Desktop/water-project-cee251l
+  python3 water_opt.py
+
+WHAT HAPPENS:
+  1. Initial design plots appear (4 windows: precipitation, volumes, costs, quality)
+  2. Terminal prompts: "OK to continue? [y]/n :"
+  3. Type 'y' and press Enter
+  4. Optimization runs (~2-5 minutes, shows progress)
+  5. Convergence plots appear
+  6. Terminal displays optimal design values
+
+SAVE YOUR RESULTS:
+  Write down the optimal values shown at the end, for example:
+    v[1] = optimized value 1   (Vr_max)
+    v[2] = optimized value 2   (Vu_max)
+    v[3] = optimized value 3   (Vt_max)
+    v[4] = optimized value 4   (Qp_max)
+
+--------------------------------------------------------------------------------
+TASK 3: UNCERTAINTY ANALYSIS (MONTE CARLO)
+--------------------------------------------------------------------------------
+FILE: water_montecarlo.py
+
+WHAT IT DOES:
+  Runs 100 (variable called NS) simulations with uncertainty in:
+  - CCTS: Climate change time scale
+  - Tc: Temperature rise
+  - P2: Population growth rate
+  - Cc: Water conservation effectiveness
+  Shows how cost varies with these uncertainties.
+
+WHAT TO EDIT:
+1. Paste your optimal design (line ~24):
+   opt_v = np.array([ ???, ???, ???, ???])  # Use YOUR values from water_opt!
+
+HOW TO RUN:
+  python3 water_montecarlo.py
+
+WHAT HAPPENS:
+  1. Initial design plots appear
+  2. Terminal prompts: "OK to continue? [y]/n :"
+  3. Type 'y' and press Enter
+  4. 100 simulations run (~10-20 minutes)
+  5. Progress updates show in terminal
+  6. Final plots show:
+     - Cost histogram
+     - Cumulative distribution function
+     - Correlation plots (how each uncertainty affects cost)
+
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+PROBLEM: "ModuleNotFoundError: No module named 'multivarious'"
+SOLUTION: 
+  - Make sure you installed with: python3 -m pip install -e .
+  - Use the SAME python3 command to run scripts
+  - If using VS Code, select the correct Python interpreter:
+    * Press Cmd+Shift+P (Mac) or Ctrl+Shift+P (Windows)
+    * Type "Python: Select Interpreter"
+    * Choose the Python that has "(base)" or matches your terminal
+
+
+================================================================================
+UNDERSTANDING THE DESIGN VS CONTROL
+================================================================================
+DESIGN VARIABLES (optimized once by water_opt.py):
+  - Vr_max: How big to build the reservoir
+  - Vu_max: How big to build the untreated tank
+  - Vt_max: How big to build the treated tank
+  - Qp_max: How much treatment capacity to install
+  These are INFRASTRUCTURE decisions - expensive, built once.
+
+CONTROL VARIABLES (decided daily by my_water_control.py):
+  - Qu: How much water to pull from reservoir today
+  - Qp: How much water to treat today
+  - q: How much decontaminant to use today
+  These are OPERATIONAL decisions - made every day based on current conditions.
+
+YOUR JOB:
+  1. Write smart control strategy (my_water_control.py)
+  2. Find optimal infrastructure size (water_opt.py)
+  3. Analyze uncertainty (water_montecarlo.py)
+
+OPTIMIZATION TIME:
+  - water_opt.py: 2-5 minutes
+  - water_montecarlo.py: 10-20 minutes (100 simulations)
+
+================================================================================
+SUBMISSION CHECKLIST
+================================================================================
+Before submitting, verify:
+  □ my_water_control.py has NO ??? remaining
+  □ water_opt.py ran successfully and shows optimal design
+  □ water_montecarlo.py ran successfully (e.g 100 simulations complete)
+  □ All plots generated and reviewed
+  □ Optimal design values recorded
+
+
+Good luck!
+================================================================================

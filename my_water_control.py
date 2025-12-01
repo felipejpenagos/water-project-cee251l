@@ -32,13 +32,13 @@ def my_water_control(msmnts, design_vars):
     # to determine flows through the treatment plant
 
     # flow from reservoir into untreated tank
-    Qu = Qp_max * (1 - (Vt / Vt_max)**2)        # ??? (this is *technically* the answer key, replace line with: Qu = ???) !!!
+    Qu = Qp_max * (1 - (Vt / Vt_max)**2)        # ??? (this is *technically* the answer key, replace line with: Qu = ???) !!!   # *****
 
     # flow processed through the treatment plant
-    Qp = Qp_max * (1 - (Vt / Vt_max)**2)        # ??? (this is *technically* the answer key, replace line with: Qp = ???) !!!
+    Qp = Qp_max * (1 - (Vt / Vt_max)**2)        # ??? (this is *technically* the answer key, replace line with: Qp = ???) !!!    # *****
 
     # flows for each of the three decontaminants
-    q = np.array([7e-7, 9e-5, 2e-4]) * Cu * Qp  # ??? (this is *technically* the answer key, replace line with: q = np.array([???, ???, ???]) !!!
+    q = np.array([7e-7, 9e-5, 2e-4]) * Cu * Qp  # ??? (this is *technically* the answer key, replace line with: q = np.array([???, ???, ???]) !!!   # *****
 
 
     u = np.array([Qu, Qp, *q])

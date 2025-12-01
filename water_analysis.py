@@ -142,7 +142,7 @@ def water_analysis(v, constants):
         Qe = Q[3, :]                    # evaporation from reservoir, Mgal / day
         Qr = Q[4, :]                    # river flow,                 Mgal / day
 
-        Cs = Cs_base[:, None] + cp[:, None] * population + cs[:, None] * Qs  #Cs = Cs_base + cp*population + cs*Qs    # streamflow contaminant concentrations
+        Cs = Cs_base[:, None] + cp[:, None] * population + cs[:, None] * Qs  # or** (HPG): Cs = Cs_base + cp*population + cs*Qs    # streamflow contaminant concentrations
         Cs[Cs < 1e-3] = 1e-2
 
         # compute the one-year precipitation index 
