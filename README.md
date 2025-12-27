@@ -45,6 +45,8 @@ Designed for Duke CEE 251L. Students implement control strategies in `my_water_c
 **Original Author**: Prof. Henri P. Gavin  
 Duke University, Civil & Environmental Engineering
 
+Translated to Python by: Felipe Jaramillo (TA - CEE251 2025)
+
 **Python Translation**: 2024-2025
 
 *Translated from MATLAB with 100% functionality preservation.*
