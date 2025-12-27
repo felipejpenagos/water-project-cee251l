@@ -1,4 +1,10 @@
 # Water Supply System Optimization
+<img width="637" height="237" alt="Screenshot 2025-12-26 at 11 30 45 PM" src="https://github.com/user-attachments/assets/f770dbdb-2467-411a-997a-5d37b7581638" />
+<img width="435" height="682" alt="Screenshot 2025-12-26 at 11 31 08 PM" src="https://github.com/user-attachments/assets/dce689e4-b259-4cd0-b204-c114036f41b1" />
+<img width="484" height="353" alt="Screenshot 2025-12-26 at 11 31 15 PM" src="https://github.com/user-attachments/assets/4d1b2351-57b6-43a9-84e3-d309679c2fa5" />
+<img width="382" height="314" alt="Screenshot 2025-12-26 at 11 31 21 PM" src="https://github.com/user-attachments/assets/7ffd879f-58a3-4977-a1d7-1f34109d5855" />
+
+
 
 50-year stochastic optimization model for sustainable water infrastructure design under climate change.
 
