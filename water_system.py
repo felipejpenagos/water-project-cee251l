@@ -5,7 +5,7 @@ from my_water_control import my_water_control
 def water_system(t, x, w, ode_constants):
     """
     [dxdt,Q] = water_system(t,x,w,ode_constants)
-    determine the state derivitive of the water supply system based on: 
+    determine the state derivative of the water supply system based on: 
     the state of the system x, 
     the controls of the system u, and
     the environmental conditions w
@@ -35,7 +35,7 @@ def water_system(t, x, w, ode_constants):
 
     # design variables ...
     design_vars = ode_constants[0]
-    Vr_max = design_vars[0]    # resevoir capacity, Mgal    
+    Vr_max = design_vars[0]    # reservoir capacity, Mgal    
     Vu_max = design_vars[1]    # plant untreated water storage capacity, Mgal
     Vt_max = design_vars[2]    # plant untreated water storage capacity, Mgal
     Qp_max = design_vars[3]    # plant treatment capacity,  Mgal/day
@@ -152,7 +152,7 @@ def water_system(t, x, w, ode_constants):
 
     dmr_dt = Cs*Qs - Cr*Qu - Cr*Qr - Cr*Qro # contaminant flow into reservoir
     dmu_dt = Cr*Qu - Cu*Qp - Cu*Quo         # contaminant flow into untreated tank
-    ### print(f"Cp shape: {np.shape(Cp)}, Ct shape: {np.shape(Ct)}, Qp: {Qp}, Qd: {Qd}, Qto: {Qto}") #**temprary debug print************
+    ### print(f"Cp shape: {np.shape(Cp)}, Ct shape: {np.shape(Ct)}, Qp: {Qp}, Qd: {Qd}, Qto: {Qto}") #**temporary debug print************
     dmt_dt = Cp*Qp - Ct*Qd - Ct*Qto         # contaminant flow into   treated tank
 
     Qr = Qr + Qro + Quo + Qto               # overflows go to the river
@@ -170,9 +170,9 @@ def water_system(t, x, w, ode_constants):
     if Qr > 5e3:                            # river floods
         dZ_dt = dZ_dt + Pf                  # ... add a flooding penalty
 
-    # the state derivitive
+    # the state derivative
 
-    ### print(f"Shapes: dVg={np.shape(dVg_dt)}, dmr={np.shape(dmr_dt)}, dmu={np.shape(dmu_dt)}, dmt={np.shape(dmt_dt)}, dZ={np.shape(dZ_dt)}") #**temprary debug print************
+    ### print(f"Shapes: dVg={np.shape(dVg_dt)}, dmr={np.shape(dmr_dt)}, dmu={np.shape(dmu_dt)}, dmt={np.shape(dmt_dt)}, dZ={np.shape(dZ_dt)}") #**temporary debug print************
     dxdt = np.concatenate([
         np.atleast_1d(dVg_dt),
         np.atleast_1d(dVr_dt),

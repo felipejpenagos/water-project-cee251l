@@ -15,7 +15,7 @@ from multivarious.rvs.plot_CDF_ci import plot_CDF_ci
 
 # on line 9 of water_constants.py . . . Plots = 0;
 
-#  v[0]  Vr_max  volume of the resevoir                       Mgal
+#  v[0]  Vr_max  volume of the reservoir                       Mgal
 #  v[1]  Vu_max  volume of the untreated water tank           Mgal
 #  v[2]  Vt_max  volume of the treated water tank             Mgal
 #  v[3]  Qp_max  max. flow through the water treatment plant  Mgal/day
@@ -116,7 +116,7 @@ for sim in range(NS):            # Monte Carlo simulation  (MCS)
         print('uh oh - non-positive cost!')
         break
 
-# emperical cumulative distribution function ...
+# empirical cumulative distribution function ...
 
 eCDF = (np.arange(1, NS + 1) - 0.5) / NS
 

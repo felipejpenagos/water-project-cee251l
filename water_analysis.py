@@ -14,7 +14,7 @@ def water_analysis(v, constants):
     my_water_control.m
     
      INPUTS  VARIABLE DESCRIPTION
-     v[0]    Vr_max  volume of the resevoir                       Mgal
+     v[0]    Vr_max  volume of the reservoir                       Mgal
      v[1]    Vu_max  volume of the untreated water tank           Mgal
      v[2]    Vt_max  volume of the treated water tank             Mgal
      v[3]    Qp_max  max. flow through the water treatment plant  Mgal/day

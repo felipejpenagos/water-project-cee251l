@@ -9,7 +9,7 @@ def my_water_control(msmnts, design_vars):
     YOUR NAME, Civil Eng'g, Duke Univ, THE DATE
     """
 
-    # Resevoir capacity, Mgal
+    # Reservoir capacity, Mgal
     Vr_max = design_vars[0]
 
     # volume capacity for the untreated water storage tank, Mgal
@@ -21,7 +21,7 @@ def my_water_control(msmnts, design_vars):
     # water flow capacity for the water treatment plant, Mgal/day
     Qp_max = design_vars[3]
 
-    Vr = msmnts[0]     # resevoir volume
+    Vr = msmnts[0]     # reservoir volume
     Vu = msmnts[1]     # untreated volume
     Vt = msmnts[2]     #   treated volume
     Cu = msmnts[3:6]   # untreated concentrations
